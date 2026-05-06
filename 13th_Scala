@@ -1,0 +1,16 @@
+object PositiveNegativeCheck {
+  def main(args: Array[String]): Unit = {
+    // Take input from user
+    println("Enter a number:")
+    val num = scala.io.StdIn.readInt()
+
+    // Check if positive, negative or zero
+    if (num > 0) {
+      println(s"$num is Positive")
+    } else if (num < 0) {
+      println(s"$num is Negative")
+    } else {
+      println("The number is Zero")
+    }
+  }
+}

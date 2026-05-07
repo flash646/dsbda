@@ -1,54 +1,16 @@
 import pandas as pd
-import numpy as np
-
 
 df = pd.read_csv("iris.csv")
+g = df.groupby('Species')
 
-# clean column names
-df.columns = df.columns.str.strip()
+print("Summary Statistics:\n")
+print(g['SepalLengthCm'].agg(['mean','median','min','max','std']))
 
-print(df.head())
+print("\nList of Values:\n")
+print(g['SepalLengthCm'].apply(list))
 
-
-print("Columns:", df.columns)
-print("Shape:", df.shape)
-
-
-grouped_stats = df.groupby('Species')['SepalLengthCm'].agg(
-    ['mean', 'median', 'min', 'max', 'std']
-)
-
-print("\nSummary Statistics:\n")
-print(grouped_stats)
-
-
-df.groupby('Species')
-
-
-['mean', 'median', 'min', 'max', 'std']
-
-
-value_list = df.groupby('Species')['SepalLengthCm'].apply(list)
-
-print("\nList of values:\n")
-print(value_list)
-
-
-#part 2
-grouped = df.groupby('Species')
-
-
-print("\nMean:\n")
-print(grouped.mean())
-
-
-print("\nStandard Deviation:\n")
-print(grouped.std())
-
+print("\nStatistical Details:\n")
+print(g.describe())
 
 print("\nPercentiles:\n")
-print(grouped.quantile([0.25, 0.5, 0.75]))
-
-
-print("\nFull Summary:\n")
-print(grouped.describe())
+print(g.quantile([0.25, 0.5, 0.75]))

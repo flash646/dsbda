@@ -1,0 +1,69 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+print("\nMissing Values:\n", df.isnull().sum())
+
+
+# Fill missing numeric values with mean
+df['Math'].fillna(df['Math'].mean(), inplace=True)
+df['Science'].fillna(df['Science'].mean(), inplace=True)
+df['English'].fillna(df['English'].mean(), inplace=True)
+
+
+
+# Replace invalid gender 'X' with most frequent value
+df['Gender'] = df['Gender'].replace('X', df['Gender'].mode()[0])
+
+print("\nCleaned Data:\n", df)
+
+
+plt.figure(figsize=(6,4))
+sns.boxplot(data=df[['Math','Science','English']])
+plt.title("Boxplot to detect outliers")
+plt.show()
+
+
+# Function to cap outliers
+def cap_outliers(column):
+    Q1 = column.quantile(0.25)
+    Q3 = column.quantile(0.75)
+    IQR = Q3 - Q1
+    
+    lower = Q1 - 1.5 * IQR
+    upper = Q3 + 1.5 * IQR
+    
+    return np.clip(column, lower, upper)
+
+# Apply to numeric columns
+df['Math'] = cap_outliers(df['Math'])
+df['Science'] = cap_outliers(df['Science'])
+df['English'] = cap_outliers(df['English'])
+
+print("\nAfter Outlier Treatment:\n", df)
+
+
+df['Math_log'] = np.log(df['Math'])
+
+print("\nAfter Transformation:\n", df[['Math','Math_log']])
+
+
+plt.figure(figsize=(10,4))
+
+plt.subplot(1,2,1)
+sns.histplot(df['Math'], kde=True)
+plt.title("Before Transformation")
+
+plt.subplot(1,2,2)
+sns.histplot(df['Math_log'], kde=True)
+plt.title("After Log Transformation")
+
+plt.show()

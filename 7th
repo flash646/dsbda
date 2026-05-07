@@ -1,0 +1,69 @@
+import nltk
+import string
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('wordnet')
+
+
+document = "Data science is an amazing field. It uses statistics, programming, and machine learning to analyze data."
+print(document)
+
+from nltk.tokenize import word_tokenize
+
+tokens = word_tokenize(document)
+print(*tokens)
+
+from nltk import pos_tag
+
+pos_tags = pos_tag(tokens)
+print(*pos_tags)
+
+
+from nltk.corpus import stopwords
+
+stop_words = set(stopwords.words('english'))
+
+filtered_words = [word for word in tokens if word.lower() not in stop_words and word.isalpha()]
+print(*filtered_words)
+
+
+from nltk.stem import PorterStemmer
+
+stemmer = PorterStemmer()
+
+stemmed_words = [stemmer.stem(word) for word in filtered_words]
+print(*stemmed_words)
+
+
+
+from nltk.stem import WordNetLemmatizer
+
+lemmatizer = WordNetLemmatizer()
+
+lemmatized_words = [lemmatizer.lemmatize(word) for word in filtered_words]
+print(*lemmatized_words)
+
+documents = [
+    "Data science uses statistics and programming",
+    "Machine learning is part of data science",
+    "Python is widely used in data science"
+]
+
+vectorizer = TfidfVectorizer()
+tfidf_matrix = vectorizer.fit_transform(documents)
+
+feature_names = vectorizer.get_feature_names_out()
+
+# Horizontal display
+print("Features:", *feature_names)
+print("\nTF-IDF Values:")
+print(tfidf_matrix.toarray())
+
+
+
+import nltk
+
+nltk.download('omw-1.4')

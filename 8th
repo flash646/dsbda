@@ -1,0 +1,41 @@
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load dataset
+dataset = sns.load_dataset('titanic')
+print(dataset.head())
+
+# Remove missing values
+dataset = dataset.dropna()
+
+# 1. Histogram of Fare
+sns.histplot(dataset['fare'], bins=10, kde=True)
+plt.xlabel("Fare")
+plt.ylabel("Number of Passengers")
+plt.title("Distribution of Fare")
+plt.show()
+
+
+# Not necessary
+# 2. Distribution Plot (Age)
+sns.histplot(dataset['age'], kde=True)
+plt.xlabel("Age")
+plt.ylabel("Count")
+plt.title("Age Distribution")
+plt.show()
+
+# 3. Box Plot (Gender vs Age)
+sns.boxplot(x='sex', y='age', data=dataset)
+plt.xlabel("Gender")
+plt.ylabel("Age")
+plt.title("Gender vs Age")
+plt.show()
+
+# 4. Bar Plot (Survival Count)
+sns.countplot(x='survived', data=dataset)
+plt.xlabel("Survived")
+plt.ylabel("Count")
+plt.title("Survival Count")
+plt.show()

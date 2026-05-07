@@ -1,69 +1,57 @@
 import nltk
-import string
-from sklearn.feature_extraction.text import TfidfVectorizer
-
-nltk.download('punkt')
-nltk.download('stopwords')
-nltk.download('averaged_perceptron_tagger')
-nltk.download('wordnet')
-
-
-document = "Data science is an amazing field. It uses statistics, programming, and machine learning to analyze data."
-print(document)
-
 from nltk.tokenize import word_tokenize
-
-tokens = word_tokenize(document)
-print(*tokens)
-
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer, WordNetLemmatizer
 from nltk import pos_tag
 
+nltk.download('punkt')
+nltk.download('punkt_tab')
+nltk.download('stopwords')
+nltk.download('averaged_perceptron_tagger_eng')
+nltk.download('wordnet')
+nltk.download('omw-1.4')
+
+text = "Text Analytics is the process of converting unstructured text into meaningful data."
+
+print("\nTokenized Words:")
+print(tokens)
+
+tokens = word_tokenize(text)
+print("\nTokenized Words:")
+print(tokens)
+
 pos_tags = pos_tag(tokens)
-print(*pos_tags)
-
-
-from nltk.corpus import stopwords
+print("\nPOS Tagging:")
+print(pos_tags)
 
 stop_words = set(stopwords.words('english'))
 
-filtered_words = [word for word in tokens if word.lower() not in stop_words and word.isalpha()]
-print(*filtered_words)
+filtered_words = []
+for word in tokens:
+    if word.lower() not in stop_words:
+        filtered_words.append(word)
 
-
-from nltk.stem import PorterStemmer
+print("\nAfter Stop Words Removal:")
+print(filtered_words)
 
 stemmer = PorterStemmer()
 
-stemmed_words = [stemmer.stem(word) for word in filtered_words]
-print(*stemmed_words)
+stemmed_words = []
 
+for word in filtered_words:
+    stemmed_word = stemmer.stem(word)
+    stemmed_words.append(stemmed_word)
 
-
-from nltk.stem import WordNetLemmatizer
+print("\nStemmed Words:")
+print(stemmed_words)
 
 lemmatizer = WordNetLemmatizer()
 
-lemmatized_words = [lemmatizer.lemmatize(word) for word in filtered_words]
-print(*lemmatized_words)
+lemmatized_words = []
 
-documents = [
-    "Data science uses statistics and programming",
-    "Machine learning is part of data science",
-    "Python is widely used in data science"
-]
+for word in filtered_words:
+    lemmatized_word = lemmatizer.lemmatize(word)
+    lemmatized_words.append(lemmatized_word)
 
-vectorizer = TfidfVectorizer()
-tfidf_matrix = vectorizer.fit_transform(documents)
-
-feature_names = vectorizer.get_feature_names_out()
-
-# Horizontal display
-print("Features:", *feature_names)
-print("\nTF-IDF Values:")
-print(tfidf_matrix.toarray())
-
-
-
-import nltk
-
-nltk.download('omw-1.4')
+print("\nLemmatized Words:")
+print(lemmatized_words)

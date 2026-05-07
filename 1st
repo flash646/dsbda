@@ -1,0 +1,19 @@
+import pandas as pd
+import numpy as np
+df=pd.read_csv("C:\DSBDA DATASETS-20260422T083844Z-3-001\DSBDA DATASETS\Iris.csv")
+print("First 5 rows:\n")
+print(df.head())
+print("Shape:")
+print(df.shape)
+print("Information:")
+print(df.info())
+print("Statistical Summary:")
+print(df.describe())
+print("Missing Values:")
+print(df.isnull().sum())
+print("Data Types:")
+print(df.dtypes)
+df['Species']=df['Species'].astype('category')
+df['Species']=df['Species'].cat.codes
+print("Updated Information:")
+print(df.info())

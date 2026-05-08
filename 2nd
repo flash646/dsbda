@@ -3,63 +3,51 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-
+df = pd.read_csv("/Users/sanvedsahu/Downloads/PR/DSBDA-PR/Dataset/AcademicPerformanceNEW.csv")
+df.head()
 
 print("\nMissing Values:\n", df.isnull().sum())
 
-
-# Fill missing numeric values with mean
-df['Math'].fillna(df['Math'].mean(), inplace=True)
-df['Science'].fillna(df['Science'].mean(), inplace=True)
-df['English'].fillna(df['English'].mean(), inplace=True)
-
-
+df['math score'] = df['math score'].fillna(df['math score'].mean())
+df['reading score'] = df['reading score'].fillna(df['reading score'].mean())
+df['writing score'] = df['writing score'].fillna(df['writing score'].mean())
 
 # Replace invalid gender 'X' with most frequent value
-df['Gender'] = df['Gender'].replace('X', df['Gender'].mode()[0])
+df['gender'] = df['gender'].replace('X', df['gender'].mode()[0])
 
 print("\nCleaned Data:\n", df)
 
-
 plt.figure(figsize=(6,4))
-sns.boxplot(data=df[['Math','Science','English']])
+sns.boxplot(data=df[['math score','reading score','writing score']])
 plt.title("Boxplot to detect outliers")
 plt.show()
-
 
 # Function to cap outliers
 def cap_outliers(column):
     Q1 = column.quantile(0.25)
     Q3 = column.quantile(0.75)
     IQR = Q3 - Q1
-    
+
     lower = Q1 - 1.5 * IQR
     upper = Q3 + 1.5 * IQR
-    
+
     return np.clip(column, lower, upper)
 
 # Apply to numeric columns
-df['Math'] = cap_outliers(df['Math'])
-df['Science'] = cap_outliers(df['Science'])
-df['English'] = cap_outliers(df['English'])
+df['math score'] = cap_outliers(df['math score'])
+df['reading score'] = cap_outliers(df['reading score'])
+df['writing score'] = cap_outliers(df['writing score'])
 
 print("\nAfter Outlier Treatment:\n", df)
 
+df['Math_log'] = np.log(df['math score'])
 
-df['Math_log'] = np.log(df['Math'])
-
-print("\nAfter Transformation:\n", df[['Math','Math_log']])
-
+print("\nAfter Transformation:\n", df[['math score','Math_log']])
 
 plt.figure(figsize=(10,4))
 
 plt.subplot(1,2,1)
-sns.histplot(df['Math'], kde=True)
+sns.histplot(df['math score'], kde=True)
 plt.title("Before Transformation")
 
 plt.subplot(1,2,2)
